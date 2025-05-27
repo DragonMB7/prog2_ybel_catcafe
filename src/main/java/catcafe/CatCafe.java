@@ -6,6 +6,8 @@ import tree.Empty;
 import tree.Tree;
 import tree.TreeVisitor;
 
+import java.util.Optional;
+
 /** A cat café takes care of a number of cats. */
 public class CatCafe {
     private Tree<FelineOverLord> clowder = new Empty<>();
@@ -34,14 +36,21 @@ public class CatCafe {
      * @param name name of the cat
      * @return cat with the given name
      */
-    public FelineOverLord getCatByName(String name) {
-        if (name == null) return null;
+    public Optional<FelineOverLord> getCatByName(String name) {
+
+        //neue Implementation mit Stream, liefert Optional<>
+        return clowder.stream()
+            .filter(c -> c.name() == name)
+            .findFirst();
+
+        //alte Implementation
+        /*if (name == null) return null;
 
         for (FelineOverLord c : clowder) {
             if (c.name().equals(name)) return c;
         }
 
-        return null;
+        return null;*/
     }
 
     /**
@@ -51,15 +60,23 @@ public class CatCafe {
      * @param maxWeight upper weight limit (exclusive)
      * @return cat within the weight limits
      */
-    public FelineOverLord getCatByWeight(int minWeight, int maxWeight) {
-        if (minWeight < 0) return null;
+    public Optional<FelineOverLord> getCatByWeight(int minWeight, int maxWeight) {
+
+        //neue Implementation mit Stream, liefert Optional<FelineOverlord>
+        return clowder.stream()
+            .filter(c -> c.weight() >= 0 && minWeight < maxWeight)
+            .filter(c -> c.weight() >= minWeight && c.weight() < maxWeight)
+            .findFirst();
+
+        //alte Implementation
+        /*if (minWeight < 0) return null;
         if (maxWeight < minWeight) return null;
 
         for (FelineOverLord c : clowder) {
             if (c.weight() >= minWeight && c.weight() < maxWeight) return c;
         }
 
-        return null;
+        return null;*/
     }
 
     /**
